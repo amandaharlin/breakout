@@ -6,6 +6,7 @@ import Phaser from 'phaser';
 import LightraysPlugin from '../src/plugins/lightrays/index.js';
 import constants from './config/constants';
 import CustomPipeline from './rendering-pipelines/CustomPipeline';
+import FoodGame from './scenes/foodgame';
 import GameScene from './scenes/game';
 import StartScene from './scenes/start';
 
@@ -15,15 +16,15 @@ const config = {
   type: Phaser.AUTO,
   width: constants.WIDTH,
   height: constants.HEIGHT,
-  plugins: {
-    scene: [
-      {
-        key: 'LightraysPlugin',
-        plugin: LightraysPlugin,
-        mapping: 'lightrays'
-      }
-    ]
-  },
+  // plugins: {
+  //   scene: [
+  //     {
+  //       key: 'LightraysPlugin',
+  //       plugin: LightraysPlugin,
+  //       mapping: 'lightrays'
+  //     }
+  //   ]
+  // },
   physics: {
     default: 'arcade',
     arcade: {
@@ -33,15 +34,16 @@ const config = {
   },
   scene: [
     //StartScene,
-    GameScene
+    //GameScene
+    FoodGame
   ],
   pixelArt: true,
-  antialias: false,
-  callbacks: {
-    postBoot: game => {
-      game.renderer.addPipeline('Custom', new CustomPipeline(game));
-    }
-  }
+  antialias: false
+  // callbacks: {
+  //   postBoot: game => {
+  //     game.renderer.addPipeline('Custom', new CustomPipeline(game));
+  //   }
+  // }
 };
 
 const game = new Phaser.Game(config);
