@@ -16,13 +16,13 @@ export default class BreakoutClone extends Phaser.Scene {
     super({
       key: 'BreakoutClone'
     });
+    console.log('this', this);
     this.bricks;
     this.paddle;
     this.ball;
   }
 
   preload() {
-    console.log(breakoutImgAtlas);
     this.load.atlas('assets', breakoutImgPack, breakoutImgAtlas);
   }
 
@@ -43,19 +43,15 @@ export default class BreakoutClone extends Phaser.Scene {
       }
     });
 
-    this.ball = this.physics.add.image(
-      STAGE_MIDDLE_W,
-      STAGE_HEIGHT - 64,
-      'assets',
-      'ball2'
-    );
+    this.ball = this.physics.add
+      .image(STAGE_MIDDLE_W, STAGE_HEIGHT - 64, 'assets', 'ball2')
+      .setCollideWorldBounds(true)
+      .setBounce(1);
+    this.ball.setData('isOnPaddle', true);
 
     this.paddle = this.physics.add
       .image(STAGE_MIDDLE_W, STAGE_HEIGHT - 32, 'assets', 'paddle2')
       .setImmovable();
-
-    console.log(this.paddle);
-    console.log('this', this);
 
     let paddleSize = this.paddle.width * 0.5;
 
@@ -65,19 +61,29 @@ export default class BreakoutClone extends Phaser.Scene {
         paddleSize,
         STAGE_WIDTH - paddleSize
       );
+      if (this.ball.getData('isOnPaddle')) {
+        this.ball.x = this.paddle.x;
+      }
     });
 
-    // this.input.on(
-    //   'pointerup',
-    //   function(pointer) {
-    //     if (this.ball.getData('onPaddle')) {
-    //       this.ball.setVelocity(-75, -300);
-    //       this.ball.setData('onPaddle', false);
-    //     }
-    //   },
-    //   this
-    // );
+    this.input.on('pointerup', pointer => {
+      if (this.ball.getData('isOnPaddle')) {
+        this.ball.setVelocity(50, -50);
+        this.ball.setData('isOnPaddle', false);
+      }
+    });
   }
-  update() {}
+  restartBall() {
+    this.ball.setData('isOnPaddle', true);
+    this.ball.x = this.paddle.x;
+    this.ball.y = this.paddle.y - 32;
+    this.ball.setVelocity(0, 0);
+  }
+
+  update() {
+    if (this.ball.y > this.paddle.y) {
+      this.restartBall();
+    }
+  }
   render() {}
 }
