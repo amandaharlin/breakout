@@ -6,6 +6,7 @@ import Phaser from 'phaser';
 import LightraysPlugin from '../src/plugins/lightrays/index.js';
 import constants from './config/constants';
 import CustomPipeline from './rendering-pipelines/CustomPipeline';
+import BreakoutClone from './scenes/breakoutclone';
 import FoodGame from './scenes/foodgame';
 import GameScene from './scenes/game';
 import StartScene from './scenes/start';
@@ -28,14 +29,15 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 400 },
-      debug: false
+      gravity: { y: 0 },
+      debug: true
     }
   },
   scene: [
     //StartScene,
     //GameScene
-    FoodGame
+    //FoodGame
+    BreakoutClone
   ],
   pixelArt: true,
   antialias: false
