@@ -53,25 +53,28 @@ export default class BreakoutClone extends Phaser.Scene {
       .image(STAGE_MIDDLE_W, STAGE_HEIGHT - 32, 'assets', 'paddle2')
       .setImmovable();
 
-    this.physics.add.collider(ball, paddle, this.hitPaddle, null, this);
+    //this.physics.add.collider(this.ball, this.paddle, this.hitPaddle, null, this);
 
     let paddleSize = this.paddle.width * 0.5;
 
     this.input.on('pointermove', pointer => {
+
       this.paddle.x = Phaser.Math.Clamp(
         pointer.x,
         paddleSize,
         STAGE_WIDTH - paddleSize
       );
-      if (this.ball.getData('isOnPaddle')) {
+
+      if (this.ball.getData('onPaddle')) {
+        console.log('onPaddle')
         this.ball.x = this.paddle.x;
       }
     });
 
     this.input.on('pointerup', pointer => {
-      if (this.ball.getData('isOnPaddle')) {
+      if (this.ball.getData('onPaddle')) {
+        this.ball.setData('onPaddle', false);
         this.ball.setVelocity(50, -50);
-        this.ball.setData('isOnPaddle', false);
       }
     });
   }
