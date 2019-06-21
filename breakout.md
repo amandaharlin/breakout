@@ -34,7 +34,7 @@ construction(){
 
 We'll begin by loading assets in the preload function, which will gather up the assets needed in-game _before_ the game loop begins. 
 
-Instead of loading each image asset one by one we'll instead load all the assets from our sprite sheet, shown below.
+Instead of loading each image asset one by one (_*and* also adding it one by one later one_), we'll instead load one big sprite sheet that has all our combined assets.
 ```
 preload() {
      this.load.atlas('assets', breakoutImgPack,breakoutImgAtlas);
@@ -78,7 +78,7 @@ Add the ball
       .image(STAGE_MIDDLE_W, STAGE_HEIGHT - 64, 'assets', 'ball2')
       .setCollideWorldBounds(true)
       .setBounce(1);
-    this.ball.setData('isOnPaddle', true);
+    this.ball.setData('onPaddle', true);
 ```
 
 
@@ -86,7 +86,7 @@ Add the ball
 Before we add velocity to the ball we first need to know if the ball is ready to start bouncing. And to know that we'll add data onto this.ball. 
 
 ```
- this.ball.setData('isOnPaddle', true);
+ this.ball.setData('onPaddle', true);
 ```
 
 Make the try to make the paddle move left and right. 
@@ -109,7 +109,7 @@ Ok, so that works, but we want the paddle to stay on the screen without flying o
         paddleSize,
         STAGE_WIDTH - paddleSize
       );
-      if (this.ball.getData('isOnPaddle')) {
+      if (this.ball.getData('onPaddle')) {
         this.ball.x = this.paddle.x;
       }
     });
@@ -124,18 +124,18 @@ Make the ball move with the paddle.
         paddleSize,
         STAGE_WIDTH - paddleSize
       );
-      if (this.ball.getData('isOnPaddle')) {
+      if (this.ball.getData('onPaddle')) {
         this.ball.x = this.paddle.x;
       }
     });
 ```
 
-Make the ball move with setVelocity and change the bool isOnPaddle. Now when the ball has launched from the paddle to begin bouncing away and smashing bricks, we'll have a false value for isOnValue.
+Make the ball move with setVelocity and change the bool onPaddle. Now when the ball has launched from the paddle to begin bouncing away and smashing bricks, we'll have a false value for onValue.
 ```
   this.input.on('pointerup', pointer => {
-      if (this.ball.getData('isOnPaddle')) {
+      if (this.ball.getData('onPaddle')) {
         this.ball.setVelocity(50, -50);
-        this.ball.setData('isOnPaddle', false);
+        this.ball.setData('onPaddle', false);
       }
     });
 ```
@@ -159,7 +159,7 @@ update() {
 
 ```
   restartBall() {
-    this.ball.setData('isOnPaddle', true);
+    this.ball.setData('onPaddle', true);
     this.ball.x = this.paddle.x;
     this.ball.y = this.paddle.y - 32;
     this.ball.setVelocity(0, 0);

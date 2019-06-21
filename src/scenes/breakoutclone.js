@@ -47,11 +47,13 @@ export default class BreakoutClone extends Phaser.Scene {
       .image(STAGE_MIDDLE_W, STAGE_HEIGHT - 64, 'assets', 'ball2')
       .setCollideWorldBounds(true)
       .setBounce(1);
-    this.ball.setData('isOnPaddle', true);
+    this.ball.setData('onPaddle', true);
 
     this.paddle = this.physics.add
       .image(STAGE_MIDDLE_W, STAGE_HEIGHT - 32, 'assets', 'paddle2')
       .setImmovable();
+
+    this.physics.add.collider(ball, paddle, this.hitPaddle, null, this);
 
     let paddleSize = this.paddle.width * 0.5;
 
@@ -73,12 +75,19 @@ export default class BreakoutClone extends Phaser.Scene {
       }
     });
   }
+
+  hitBrick() {}
+
+  hitPaddle() {}
+
   restartBall() {
-    this.ball.setData('isOnPaddle', true);
+    this.ball.setData('onPaddle', true);
     this.ball.x = this.paddle.x;
     this.ball.y = this.paddle.y - 32;
     this.ball.setVelocity(0, 0);
   }
+
+  restartGame() {}
 
   update() {
     if (this.ball.y > this.paddle.y) {
