@@ -163,7 +163,7 @@ export default class BreakoutClone extends Phaser.Scene {
 
     this.cameras.main.shake(shakeAmt);
     this.ball.body.velocity.y = this.ball.body.velocity.y * 1.1;
-    console.log(this.ball.body.velocity)
+    console.log(this.ball.body.velocity);
     if (this.bricks.countActive() === 0) {
       this.winGame();
     }
@@ -175,7 +175,8 @@ export default class BreakoutClone extends Phaser.Scene {
     this.winMsg = this.add.text(
       STAGE_MIDDLE_W - 64,
       STAGE_MIDDLE_H / 2,
-      'You won!', {
+      'You won!',
+      {
         fontSize: '24px',
         fill: 'pink'
       }
