@@ -36,7 +36,14 @@ export default class BreakoutClone extends Phaser.Scene {
 
     this.bricks = this.physics.add.staticGroup({
       key: 'assets',
-      frame: ['brick-blue.png', 'brick-rainbow.png', 'brick-black.png', 'brick-yellow.png', 'brick-white.png', 'brick-red.png'],
+      frame: [
+        'brick-blue.png',
+        'brick-rainbow.png',
+        'brick-black.png',
+        'brick-yellow.png',
+        'brick-white.png',
+        'brick-red.png'
+      ],
       frameQuantity: 16,
       gridAlign: {
         width: 16,
@@ -48,17 +55,12 @@ export default class BreakoutClone extends Phaser.Scene {
       }
     });
 
-
-
     this.ball = this.physics.add
       .image(STAGE_MIDDLE_W, ballY, 'assets', 'ball-1.png')
       .setCollideWorldBounds(true)
       .setBounce(1);
 
-
     this.particles = this.add.particles('assets', 'ball-1.png');
-
-
 
     this.ballEmitter = this.particles.createEmitter({
       alpha: {
@@ -69,12 +71,16 @@ export default class BreakoutClone extends Phaser.Scene {
         start: 1,
         end: 1
       },
-      //tint: { start: 0xff945e, end: 0xff945e },
+      tint: {
+        start: 0xff945e,
+        end: 0xff945e
+      },
       speed: 0,
       accelerationY: 0,
+      accelerationX: 30,
       angle: {
-        min: 0,
-        max: 0
+        min: 1000,
+        max: 1000
       },
       rotate: {
         min: 0,
@@ -133,7 +139,10 @@ export default class BreakoutClone extends Phaser.Scene {
       if (this.ball.getData('onPaddle')) {
         this.ball.setData('onPaddle', false);
         this.ballEmitter.on = true;
-        this.ball.setVelocity(Phaser.Math.Between(-START_RANGE, START_RANGE), -200);
+        this.ball.setVelocity(
+          Phaser.Math.Between(-START_RANGE, START_RANGE),
+          -200
+        );
       }
     });
 
@@ -147,13 +156,14 @@ export default class BreakoutClone extends Phaser.Scene {
   }
 
   hitBrick(ball, brick) {
-
     brick.disableBody(true, true);
 
-    console.log(brick)
-    let shakeAmt = Math.abs(Math.floor(this.ball.body.velocity.x))
-    this.cameras.main.shake(shakeAmt);
+    console.log(brick);
+    let shakeAmt = Math.abs(Math.floor(this.ball.body.velocity.x));
 
+    this.cameras.main.shake(shakeAmt);
+    this.ball.body.velocity.y = this.ball.body.velocity.y * 1.1;
+    console.log(this.ball.body.velocity)
     if (this.bricks.countActive() === 0) {
       this.winGame();
     }
@@ -195,6 +205,7 @@ export default class BreakoutClone extends Phaser.Scene {
     }
 
     this.ball.setVelocityX(velocity);
+    this.ball.setVelocityY(-200);
   }
 
   restartBall() {
